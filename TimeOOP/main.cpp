@@ -2,113 +2,123 @@
 #include <cmath>
 #include <string>
 
+
 using namespace std;
 
 class Time
 {
 public:     //______________________________________________________________PUBLIC
-    void setTime (int a)
+    void setSecond(int a)
     {
-        time = abs(a);
+        secTOform = a;
     }
-    void PrintTime()
+    void printSecForm()
     {
-        cout<<"Hour = "<<recountHour()<<endl<<"Minutes = "<<recountMin()<<endl<<"Second = "<<recounSec();
+        cout << secHH() << ":" << secMM() << ":" << secSS();
     }
-    void PrintFormatSecond()
+    string strGet(string valueSTR)
     {
-        cout<<SecondtoFormatVoid();
+        strHHMMSS = valueSTR;
+        return strHHMMSS;
     }
-
+    int GettoConsole()
+    {
+        recountToSec();
+        return recountToSec();
+    }
 private:    //______________________________________________________________PRIVATE
-    int time = 0;
-    int hour = 0;
-    int min = 0;
-    double second = 0;
-    string hourSTR, minSTR, secSTR;
-    int hh, mm, ss;
-    int secondToFormat = 0;
+    int secTOform = 0;
+    int hour1, min1, sec1 = 0;
+    //__________________________________________________________________________HH:MM:SS down
+    string strHHMMSS = " ";
+    string h = " ";
+    string m = " ";
+    string s = " ";
+    int hF, mF, sF, recountSec = 0;
 
-                    string divisionHour(string strget)   //считываение со строки ЧАСЫ
-                    {
-                        hourSTR = strget.substr(0 , 2);
-                        return hourSTR;
-                    }
-                    string divisionMin (string strget)  //считывание со строки МИНУТЫ
-                    {
-                        minSTR = strget.substr(3,2);
-                        return minSTR;
-                    }
-                    string divisionSec (string strget)  //считывание со строки СЕКУНДЫ
-                    {
-                        secSTR = strget.substr(6 , 2);
-                        return secSTR;
-                    }
-            int convertHour () //перевод из string в int ЧАСЫ
-            {
-                hh = stoi(hourSTR);
-                return  hh;
-            }
-            int convertMin () //перевод из string в int МИНУТЫ
-            {
-                mm = stoi(minSTR);
-                return mm;
-            }
-            int convertSec () //перевод из string в int СЕКУНДЫ
-            {
-                ss = stoi(secSTR);
-                return ss;
-            }
-
-    int SecondtoFormatVoid ()
+    int secHH()
     {
-        secondToFormat = hh*3600+mm*60+ss;
-        return secondToFormat;
+        hour1 = secTOform / 3600;
+        return hour1;
     }
-//_____________________________________________________________________//
-    int recountHour ()
+    int secMM()
     {
-        hour = time /3600;
-        return hour;
+        min1 = (secTOform - hour1 * 3600) / 60;
+        return min1;
     }
-    int recountMin()
+    int secSS()
     {
-        min = (time - hour*3600)/60;
-        return min;
-    }
-    int recounSec()
-    {
-        second = time - hour * 3600 - min * 60;
-        return second;
+        sec1 = secTOform - hour1 * 3600 - min1 * 60;
+        return sec1;
     }
 
+    //____________________________________________________________________________
+    string substr1()
+    {
+        h = strHHMMSS.substr(0, 2);
+        return h;
+    }
+    string substr2()
+    {
+        m = strHHMMSS.substr(3, 2);
+        return m;
+     }
+    string substr3()
+    {
+        s = strHHMMSS.substr(6, 2);
+        return s;
+    }
+
+    int convertHtoINT()
+    {
+        hF = stoi(substr1());
+        return hF;
+    }
+    int convertMtoINT()
+    {
+        mF = stoi(substr2());
+        return mF;
+    }
+    int convertStoINT()
+    {
+        sF = stoi(substr3());
+        return sF;
+    }
+
+    int recountToSec()
+    {
+        recountSec = convertHtoINT()* 3600 + convertMtoINT() * 60 + convertStoINT();
+        return recountSec;
+    }
 };
 
 int main()
 {
+    int choize, inputsec = 0;
+    string strFormatGet = " ";
     Time used;
-    int a = 0;
-    string strget;
-    char choize;
-    cout<<"If you want to convert seconds to |hours/minutes/seconds|, press |S|, if you want to convert seconds to format |hours/minutes/seconds| press |H| = ";
+    cout << "(press 1) second >> |HH:MM:SS| or (press 2) |HH:MM:SS| >> second = ";
     cin >> choize;
     switch (choize)
     {
-        case 'H':
-            cout<<"Enter second = ";
-            cin>>a;
-            used.setTime(a);
-            used.PrintTime();
-                break;
-        case 'S':
-            cout<<"Enter time ||HH:MM:SS|| = ";
-            cin>>choize;
-            getline(cin,strget);
-            used.PrintFormatSecond();
-//        default:
-//            cout<<"Error";
-//                  break;
-    }
+    case 1:
+        //действие перевод из СЕКУНД В ФОРМАТ
+        cout << "Enter second = ";
+        cin >> inputsec;
+        used.setSecond(inputsec);
+        used.printSecForm();
+        break;
+    case 2:
+        //действие перевод из ФОРМАТА В СЕКУНДЫ
+        cout << "Enter time in format HH:MM:SS = ";
+        cin>>strFormatGet;
+        used.strGet(strFormatGet);
+        cout << used.GettoConsole();
 
-    return 0;
+        break;
+    default:
+        cout << "Error";
+        break;
+    }
 }
+
